@@ -34,31 +34,15 @@ export default class HelloWorldSceneAR extends Component {
 	render() {
 		return (
 			<ViroARScene onTrackingUpdated={this._onInitialized}>
-				<ViroNode position={[0, -1, 0]} dragType="FixedToWorld" onDrag={() => {}}>
-					<Viro3DObject
-						source={require('./res/emoji_smile/emoji_smile.vrx')}
-						resources={[
-							require('./res/emoji_smile/emoji_smile_diffuse.png'),
-							require('./res/emoji_smile/emoji_smile_normal.png'),
-							require('./res/emoji_smile/emoji_smile_specular.png'),
-						]}
-						position={[0, 0.5, 0]}
-						scale={[0.2, 0.2, 0.2]}
-						type="VRX"
-					/>
-				</ViroNode>
+				<ViroNode position={[0, -1, 0]} dragType="FixedToWorld" onDrag={() => {}}></ViroNode>
+
 				<ViroText
 					text={this.state.text}
 					scale={[0.5, 0.5, 0.5]}
 					position={[0, 0, -1]}
 					style={styles.helloWorldTextStyle}
 				/>
-				<ViroBox
-					position={[0, -0.5, -1]}
-					scale={[0.3, 0.3, 0.1]}
-					materials={['grid']}
-					animation={{ name: 'rotate', run: true, loop: true }}
-				/>
+
 				<ViroAmbientLight color={'#aaaaaa'} />
 				<ViroSpotLight
 					innerAngle={5}
@@ -68,16 +52,16 @@ export default class HelloWorldSceneAR extends Component {
 					color="#ffffff"
 					castsShadow={true}
 				/>
-				<Viro3DObject
-					source={require('./res/emoji_smile/emoji_smile.vrx')}
-					resources={[
-						require('./res/emoji_smile/emoji_smile_diffuse.png'),
-						require('./res/emoji_smile/emoji_smile_normal.png'),
-						require('./res/emoji_smile/emoji_smile_specular.png'),
-					]}
-					position={[-0.5, 0.5, -1]}
-					scale={[0.2, 0.2, 0.2]}
-					type="VRX"
+
+				<ViroNode position={[0, 0, -1]}>
+					<Viro3DObject source={require('./res/heart.obj')} materials={['heart']} type="OBJ" />
+				</ViroNode>
+
+				<ViroText
+					text="Heart"
+					position={[0.0, 0.0, -3]}
+					style={styles.textStyle}
+					transformBehaviors={['billboardY']}
 				/>
 			</ViroARScene>
 		);
@@ -108,12 +92,19 @@ ViroMaterials.createMaterials({
 	grid: {
 		diffuseTexture: require('./res/grid_bg.jpg'),
 	},
+	heart: {
+		lightingModel: 'Blinn',
+		diffuseTexture: require('./res/Heart_D3.jpg'),
+		specularTexture: require('./res/Heart_S2.jpg'),
+		writesToDepthBuffer: true,
+		readsFromDepthBuffer: true,
+	},
 });
 
 ViroAnimations.registerAnimations({
 	rotate: {
 		properties: {
-			rotateY: '+=90',
+			rotateY: '+=45',
 		},
 		duration: 250, //.25 seconds
 	},
